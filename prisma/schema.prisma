@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id Int @id @default(autoincrement())
+  fullname String @db.VarChar(32)
+  email String @unique @db.VarChar(32)
+  password String @db.VarChar(64)
+}
+
+model races {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(32)
+  pets pets[]
+}
+
+model categories {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(32)
+  pets pets[]
+}
+
+model genders {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(32)
+  pets pets[]
+}
+
+model pets {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(32)
+  race_id Int
+  fk_race races @relation(fields: [race_id], references: [id])
+  category_id Int
+  fk_category categories @relation(fields: [category_id], references: [id])
+  photo String @db.VarChar(64)
+  gender_id Int
+  fk_gender genders @relation(fields: [gender_id], references: [id])
+  municipio_id Int
+  fk_municipio municipio @relation(fields: [municipio_id], references: [id])
+}
+
+model municipio {
+  id Int @id @default(autoincrement())
+  name String @db.VarChar(32)
+  pets pets[]
+}
